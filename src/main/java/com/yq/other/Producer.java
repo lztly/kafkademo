@@ -17,9 +17,9 @@ import java.util.Properties;
 public class Producer {
     public void test() {
         Properties props = new Properties();
-        //10.4.16.58 ubuntu01  如果不在hosts文件中配置这个，一直无法连接。 虚拟机在virtualBox中，选择的桥接器模式
+        //9.x.y.z ubuntu01  如果不在hosts文件中配置这个，一直无法连接。 虚拟机在virtualBox中，选择的桥接器模式
         //这个demo在windows上，
-        props.put("bootstrap.servers", "10.4.16.58:9092");
+        props.put("bootstrap.servers", "9.x.y.z:9092");
         //“所有”设置将导致记录的完整提交阻塞，最慢的，但最持久的设置。
         props.put("acks", "all");
         //如果请求失败，生产者也会自动重试，即使设置成０ the producer can automatically retry.
