@@ -31,4 +31,14 @@ public class CmdSender {
         log.info("+++++++++++++++++++++  message = {}", gson.toJson(cmdMsg));
         kafkaTemplate.send("topic01", gson.toJson(cmdMsg));
     }
+
+    //发送消息方法
+    public void send(String topic, String str) {
+        CmdMessage cmdMsg = new CmdMessage();
+        cmdMsg.setId(System.currentTimeMillis());
+        cmdMsg.setMsg(str);
+        cmdMsg.setSendTime(new Date());
+        log.info("+++++++++++++++++++++  message = {}", gson.toJson(cmdMsg));
+        kafkaTemplate.send(topic, gson.toJson(cmdMsg));
+    }
 }
