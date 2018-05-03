@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,10 +59,35 @@ public class CmdSender {
         msgData.setData(map);
         msgData.setDelta(0L);
         devMsg.setMsg(msgData);
+        devMsg.setTopic(topic);
 
         log.info("+++++++++++++++++++++  message = {}", gson.toJson(devMsg));
-        //{ "msg" : { "data" : { "L0001" : "50", "L0003" : "8", "L0002" : "81", "" : "1804" }, "delta" : 0 },
-        //    "deviceid" : "86b874260d224cf8870bef1df60bcfff", "ts" : "1524736016604" }
+        /*
+{
+    "msg": {
+        "data": {
+            "A0001": "50",
+            "B0003": "8",
+            "C0002": "81",
+            "Zone1_temperature": "1804"
+        },
+        "delta": 0
+    },
+    "deviceid": "86b874260d224cf8870bef1df60bcfff",
+    "ts": "1524736016604"
+}*/
         kafkaTemplate.send(topic, gson.toJson(devMsg));
+    }
+
+    //发送消息方法
+    public void sendJson(String topic, String json) {
+        JSONObject jsonObj = JSON.parseObject(json);
+
+        jsonObj.put("topic", topic);
+        jsonObj.put("ts", System.currentTimeMillis() + "");
+
+        log.info("json+++++++++++++++++++++  message = {}", jsonObj.toJSONString());
+
+        kafkaTemplate.send(topic, jsonObj.toJSONString());
     }
 }
